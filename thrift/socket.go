@@ -24,7 +24,6 @@ import (
 	"time"
 )
 
-// 网络层, 其实不需要定义Socket
 type TSocket struct {
 	conn    net.Conn
 	addr    net.Addr
@@ -82,7 +81,6 @@ func (p *TSocket) pushDeadline(read, write bool) {
 
 // Connects the socket, creating a new socket object if necessary.
 func (p *TSocket) Open() error {
-	// 如何打开一个连接呢?
 	if p.IsOpen() {
 		return NewTTransportException(ALREADY_OPEN, "Socket already connected.")
 	}
@@ -159,4 +157,9 @@ func (p *TSocket) Interrupt() error {
 		return nil
 	}
 	return p.conn.Close()
+}
+
+func (p *TSocket) RemainingBytes() (num_bytes uint64) {
+	const maxSize = ^uint64(0)
+	return maxSize // the thruth is, we just don't know unless framed is used
 }

@@ -30,10 +30,15 @@ type Flusher interface {
 	Flush() (err error)
 }
 
+type ReadSizeProvider interface {
+	RemainingBytes() (num_bytes uint64)
+}
+
 // Encapsulates the I/O layer
 type TTransport interface {
 	io.ReadWriteCloser
 	Flusher
+	ReadSizeProvider
 
 	// Opens the transport for communication
 	Open() error
@@ -56,4 +61,5 @@ type TRichTransport interface {
 	io.ByteWriter
 	stringWriter
 	Flusher
+	ReadSizeProvider
 }
